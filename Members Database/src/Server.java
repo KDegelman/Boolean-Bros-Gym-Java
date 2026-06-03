@@ -78,8 +78,8 @@ public class Server {
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 System.out.println("Member found, displaying data");
-                System.out.println("MemberID: " + rs.getInt("MemberID") + ", FirstName: "
-                        + rs.getString("First Name") + " LastName: " + rs.getString("Last Name")+ "Date of Birth" +
+                System.out.println("MemberID: " + rs.getInt("MemberID") + ", First Name: "
+                        + rs.getString("First Name") + " Last Name: " + rs.getString("Last Name")+ "Date of Birth" +
                         rs.getString("Date of Birth") +
                         ", Email: " + rs.getString("Email") + ", Phone Number: " + rs.getString("Phone Number") + ", Gender: "
                         + rs.getInt("Gender") + ", City of Residence: " + rs.getInt("City of Residence"));
@@ -96,14 +96,15 @@ public class Server {
         try {
             stmt = DatabaseConnect.prepareStatement("SELECT * FROM members WHERE MemberID = " + userId);
             ResultSet rs = stmt.executeQuery();
+            System.out.println();
             if (rs.next()) {
                 System.out.println("Member found, displaying data");
-                System.out.println("MemberID: " + rs.getInt("MemberID") + ", FirstName: "
-                        + rs.getString("First Name") + " LastName: " + rs.getString("Last Name")+ "Date of Birth" +
+                System.out.println("MemberID: " + rs.getInt("MemberID") + ", First Name: "
+                        + rs.getString("First Name") + " Last Name: " + rs.getString("Last Name")+ "Date of Birth" +
                         rs.getString("Date of Birth") +
                         ", Email: " + rs.getString("Email") + ", Phone Number: " + rs.getString("Phone Number") + ", Gender: "
                         + rs.getInt("Gender") + ", City of Residence: " + rs.getInt("City of Residence"));
-                clientOut.println("MemberID: " + rs.getInt("MemberID") + ", FirstName: "
+                clientOut.println("MemberID: " + rs.getInt("MemberID") + ", First Name: "
                         + rs.getString("First Name") + " LastName: " + rs.getString("Last Name")+ "Date of Birth" +
                         rs.getString("Date of Birth") +
                         ", Email: " + rs.getString("Email") + ", Phone Number: " + rs.getString("Phone Number") + ", Gender: "
@@ -129,7 +130,7 @@ public class Server {
             ResultSet rs = selectAll.executeQuery("SELECT * FROM members");
             System.out.println("All members:");
             while (rs.next()) {
-                System.out.println("MemberID: " + rs.getInt("MemberID") + ", FirstName: "
+                System.out.println("MemberID: " + rs.getInt("MemberID") + ", First Name: "
                         + rs.getString("First Name") + " LastName: " + rs.getString("Last Name")+ "Date of Birth" +
                         rs.getString("Date of Birth") +
                         ", Email: " + rs.getString("Email") + ", Phone Number: " + rs.getString("Phone Number") + ", Gender: "
@@ -144,18 +145,18 @@ public class Server {
         Statement selectAll;
         try {
             selectAll = DatabaseConnect.createStatement();
-            ResultSet rs = selectAll.executeQuery("SELECT * FROM members");
+            ResultSet rs = selectAll.executeQuery("SELECT * FROM sys.members");
             System.out.println("All Members:");
             while (rs.next()) {
-                System.out.println("MemberID: " + rs.getInt("MemberID") + ", FirstName: " 
+                System.out.println("MemberID: " + rs.getInt("MemberID") + ", First Name: "
                 + rs.getString("First Name") + " LastName: " + rs.getString("Last Name")+ "Date of Birth" +
                                 rs.getString("Date of Birth") +
                 ", Email: " + rs.getString("Email") + ", Phone Number: " + rs.getString("Phone Number") + ", Gender: "
-                                + rs.getInt("Gender") + ", City of Residence: " + rs.getInt("City of Residence")
+                                + rs.getString("Gender") + ", City of Residence: " + rs.getString("City of Residence")
                 );
-                Out.println("MemberID: " + rs.getInt("MemberID") + ", FirstName: "
+                Out.println("MemberID: " + rs.getInt("MemberID") + ", First Name: "
                         + rs.getString("First Name") + " LastName: " + rs.getString("Last Name")+ "Date of Birth" + rs.getString("Date of Birth") +
-                        ", Email: " + rs.getString("Email") + ", Phone Number: " + rs.getString("Phone Number") + ", Gender: " + rs.getInt("Gender") + ", City of Residence: " + rs.getInt("City of Residence")
+                        ", Email: " + rs.getString("Email") + ", Phone Number: " + rs.getString("Phone Number") + ", Gender: " + rs.getString("Gender") + ", City of Residence: " + rs.getString("City of Residence")
                 );
 
             }

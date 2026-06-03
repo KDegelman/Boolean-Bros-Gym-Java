@@ -49,7 +49,7 @@ public class Client implements Runnable{
             int choice = Integer.parseInt(scanner.nextLine());
             switch (choice) {
                 case 1 -> {
-                    System.out.println("Enter [MemberID, FirstName, LastName, Date of Birth, Email, Phone Number, Gender, City of Residence ], separated by commas.");
+                    System.out.println("Enter [MemberID, First Name, Last Name, Date of Birth, Email, Phone Number, Gender, City of Residence ], separated by commas.");
                     String[] fields = scanner.nextLine().split(",");
                     if (fields[0].isEmpty()) {
                         fields[0] = "0";
