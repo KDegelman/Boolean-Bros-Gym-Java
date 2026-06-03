@@ -98,8 +98,11 @@ public class Server {
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 System.out.println("Member found, displaying data");
-                System.out.println("MemberId: " + rs.getInt("MemberID") +
-                ", FirstName: " + rs.getString("FirstName") + " LastName: " + rs.getString("LastName") + ", Email: " + rs.getString("Email") + ", Age: " + rs.getInt("Age") + ", DisplayName: " + rs.getString("DisplayName"));
+                System.out.println("MemberID: " + rs.getInt("MemberID") + ", FirstName: "
+                        + rs.getString("First Name") + " LastName: " + rs.getString("Last Name")+ "Date of Birth" +
+                        rs.getString("Date of Birth") +
+                        ", Email: " + rs.getString("Email") + ", Phone Number: " + rs.getString("Phone Number") + ", Gender: "
+                        + rs.getInt("Gender") + ", City of Residence: " + rs.getInt("City of Residence"));
                 clientOut.println("MemberID: " + rs.getInt("MemberID") + ", FirstName: "
                         + rs.getString("First Name") + " LastName: " + rs.getString("Last Name")+ "Date of Birth" +
                         rs.getString("Date of Birth") +
@@ -157,6 +160,7 @@ public class Server {
 
             }
             Out.println("END");
+
         } catch (SQLException e) {
             System.out.println("Error reading all data: " + e.getMessage());
             Out.println("Error reading all data: " + e.getMessage());

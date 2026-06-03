@@ -12,6 +12,5 @@ public class Main {
         } else if (input == 'S') {
             Server server = new Server();
         }
-
     }
 }
