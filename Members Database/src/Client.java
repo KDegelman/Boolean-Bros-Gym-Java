@@ -47,7 +47,7 @@ public class Client implements Runnable{
     @Override
     public void run() {
         while (true) {
-            System.out.println("1 - Create User\n2 - Read All Members\n3 - Read One User\n4 - Update User\n5 - Delete User\n6 - Exit");
+            System.out.println("1 - Create Member\n2 - Read All Members\n3 - Read One User\n4 - Update User\n5 - Delete User\n6 - Exit");
             int choice = Integer.parseInt(scanner.nextLine());
             switch (choice) {
                 case 1 -> {
