@@ -44,8 +44,8 @@ public class Server {
             columns = metaData.getColumns(DatabaseName, null, "Members", null);
             System.out.println("Database has connected. Database name: " + DatabaseName);
 
-            serverSocket = new ServerSocket(1234);
-            System.out.println(("Server is listening on port 1234"));
+            serverSocket = new ServerSocket(3306);
+            System.out.println(("Server is listening on port 3306"));
             while (true) {
                 Socket client = serverSocket.accept();
                 Thread clientHandler = new Thread(new ClientHndlr(client, this));
@@ -100,15 +100,15 @@ public class Server {
             if (rs.next()) {
                 System.out.println("Member found, displaying data");
                 System.out.println("MemberID: " + rs.getInt("MemberID") + ", First Name: "
-                        + rs.getString("First Name") + " Last Name: " + rs.getString("Last Name")+ "Date of Birth" +
-                        rs.getString("Date of Birth") +
-                        ", Email: " + rs.getString("Email") + ", Phone Number: " + rs.getString("Phone Number") + ", Gender: "
-                        + rs.getInt("Gender") + ", City of Residence: " + rs.getInt("City of Residence"));
+                        + rs.getString("First_Name") + " Last Name: " + rs.getString("Last_Name")+ "DateofBirth" +
+                        rs.getString("Date_of_Birth") +
+                        ", Email: " + rs.getString("Email") + ", Phone Number: " + rs.getString("Phone_Number") + ", Gender: "
+                        + rs.getString("Gender") + ", City of Residence: " + rs.getString("City_of_Residence"));
                 clientOut.println("MemberID: " + rs.getInt("MemberID") + ", First Name: "
-                        + rs.getString("First Name") + " LastName: " + rs.getString("Last Name")+ "Date of Birth" +
-                        rs.getString("Date of Birth") +
-                        ", Email: " + rs.getString("Email") + ", Phone Number: " + rs.getString("Phone Number") + ", Gender: "
-                        + rs.getInt("Gender") + ", City of Residence: " + rs.getInt("City of Residence")
+                        + rs.getString("First_Name") + " LastName: " + rs.getString("Last_Name")+ "Date of Birth" +
+                        rs.getString("Date_of_Birth") +
+                        ", Email: " + rs.getString("Email") + ", Phone Number: " + rs.getString("Phone_Number") + ", Gender: "
+                        + rs.getString("Gender") + ", City of Residence: " + rs.getString("City_of_Residence")
                 );
                 clientOut.println("END");
             } else {
@@ -131,10 +131,10 @@ public class Server {
             System.out.println("All members:");
             while (rs.next()) {
                 System.out.println("MemberID: " + rs.getInt("MemberID") + ", First Name: "
-                        + rs.getString("First Name") + " LastName: " + rs.getString("Last Name")+ "Date of Birth" +
-                        rs.getString("Date of Birth") +
-                        ", Email: " + rs.getString("Email") + ", Phone Number: " + rs.getString("Phone Number") + ", Gender: "
-                        + rs.getInt("Gender") + ", City of Residence: " + rs.getInt("City of Residence")
+                        + rs.getString("First_Name") + " LastName: " + rs.getString("Last_Name")+ " Date of Birth" +
+                        rs.getString("Date_of_Birth") +
+                        ", Email: " + rs.getString("Email") + ", Phone Number: " + rs.getString("Phone_Number") + ", Gender: "
+                        + rs.getInt("Gender") + ", City of Residence: " + rs.getInt("City_of_Residence")
                 );}
         } catch (SQLException e) {
             System.out.println("Error reading all data: " + e.getMessage());
@@ -149,14 +149,16 @@ public class Server {
             System.out.println("All Members:");
             while (rs.next()) {
                 System.out.println("MemberID: " + rs.getInt("MemberID") + ", First Name: "
-                + rs.getString("First Name") + " LastName: " + rs.getString("Last Name")+ "Date of Birth" +
-                                rs.getString("Date of Birth") +
-                ", Email: " + rs.getString("Email") + ", Phone Number: " + rs.getString("Phone Number") + ", Gender: "
-                                + rs.getString("Gender") + ", City of Residence: " + rs.getString("City of Residence")
+                + rs.getString("First_Name") + " LastName: " + rs.getString("Last_Name")+ " Date of Birth" +
+                                rs.getString("Date_of_Birth") +
+                ", Email: " + rs.getString("Email") + ", Phone Number: " + rs.getString("Phone_Number") + ", Gender: "
+                                + rs.getString("Gender") + ", City of Residence: " + rs.getString("City_of_Residence")
                 );
                 Out.println("MemberID: " + rs.getInt("MemberID") + ", First Name: "
-                        + rs.getString("First Name") + " LastName: " + rs.getString("Last Name")+ "Date of Birth" + rs.getString("Date of Birth") +
-                        ", Email: " + rs.getString("Email") + ", Phone Number: " + rs.getString("Phone Number") + ", Gender: " + rs.getString("Gender") + ", City of Residence: " + rs.getString("City of Residence")
+                        + rs.getString("First_Name") + " LastName: " + rs.getString("Last_Name")+ " Date of Birth" +
+                        rs.getString("Date_of_Birth") +
+                        ", Email: " + rs.getString("Email") + ", Phone Number: " + rs.getString("Phone_Number") + ", Gender: "
+                        + rs.getString("Gender") + ", City of Residence: " + rs.getString("City_of_Residence")
                 );
 
             }
@@ -233,7 +235,7 @@ public class Server {
         }
 
         try {
-            stmt = DatabaseConnect.prepareStatement("INSERT INTO members VALUE (?, ?, ?, ?, ?, ?, ?, ?);");
+            stmt = DatabaseConnect.prepareStatement("INSERT INTO members VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
             stmt.setInt(1, MemberID);
             stmt.setString(2, firstName);
             stmt.setString(3, lastName);
@@ -356,10 +358,9 @@ public class Server {
                         return false;
                     }
                 }
-                PreparedStatement stmt2 = DatabaseConnect.prepareStatement("UPDATE members SET ? = ? WHERE MemberID = ?");
-                stmt2.setString(1, columnName);
-                stmt2.setString(2, value);
-                stmt2.setInt(3, MemberID);
+                PreparedStatement stmt2 = DatabaseConnect.prepareStatement("UPDATE members SET " + columnName + " = ? WHERE MemberID = ?");
+                stmt2.setString(1, value);
+                stmt2.setInt(2, MemberID);
                 stmt2.executeUpdate();
                 System.out.println("Updated " + columnName + " from " + oldValue + " to " + value);
                 clientOut.println("Updated" + columnName + " from " + oldValue + " to " + value);
