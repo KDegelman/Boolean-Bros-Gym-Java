@@ -19,18 +19,22 @@ public class Server {
     public Server() {
         Map<String, String> env;
         EnvParser envParser = new EnvParser();
-        try {
-            env = envParser.getEnvVars();
-            for (String pass : env.keySet()) {
-                switch (pass) {
-                    case "DB_URL" -> this.url = env.get(pass);
-                    case "DB_USERNAME" -> this.username = env.get(pass);
-                    case "DB_PASSWORD" -> this.password = env.get(pass);
-                }
-            }
-        } catch (IOException e) {
-            System.out.println("Error reading and grabbing environment variables. Are they set properly?");
-        }
+//        try {
+//            env = envParser.getEnvVars();
+//            for (String pass : env.keySet()) {
+//                switch (pass) {
+//                    case "DB_URL" -> this.url = env.get(pass);
+//                    case "DB_USERNAME" -> this.username = env.get(pass);
+//                    case "DB_PASSWORD" -> this.password = env.get(pass);
+//                }
+//            }
+//        } catch (IOException e) {
+//            System.out.println("Error reading and grabbing environment variables. Are they set properly?");
+//        }
+        //Kolten Change
+        this.url = "jdbc:mysql://localhost:3306/sys";
+        this.username = "root";
+        this.password = "YOUR_PASSWORD";
         try {
             DatabaseName = "";
             assert url != null;
@@ -43,9 +47,9 @@ public class Server {
             DatabaseMetaData metaData = DatabaseConnect.getMetaData();
             columns = metaData.getColumns(DatabaseName, null, "Members", null);
             System.out.println("Database has connected. Database name: " + DatabaseName);
-
-            serverSocket = new ServerSocket(3306);
-            System.out.println(("Server is listening on port 3306"));
+//Kolten Change
+            serverSocket = new ServerSocket(1234);
+            System.out.println(("Server is listening on port 1234"));
             while (true) {
                 Socket client = serverSocket.accept();
                 Thread clientHandler = new Thread(new ClientHndlr(client, this));
