@@ -19,22 +19,22 @@ public class Server {
     public Server() {
         Map<String, String> env;
         EnvParser envParser = new EnvParser();
-//        try {
-//            env = envParser.getEnvVars();
-//            for (String pass : env.keySet()) {
-//                switch (pass) {
-//                    case "DB_URL" -> this.url = env.get(pass);
-//                    case "DB_USERNAME" -> this.username = env.get(pass);
-//                    case "DB_PASSWORD" -> this.password = env.get(pass);
-//                }
-//            }
-//        } catch (IOException e) {
-//            System.out.println("Error reading and grabbing environment variables. Are they set properly?");
-//        }
+        try {
+            env = envParser.getEnvVars();
+            for (String pass : env.keySet()) {
+                switch (pass) {
+                    case "DB_URL" -> this.url = env.get(pass);
+                    case "DB_USERNAME" -> this.username = env.get(pass);
+                    case "DB_PASSWORD" -> this.password = env.get(pass);
+                }
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading and grabbing environment variables. Are they set properly?");
+        }
         //Kolten Change
-        this.url = "jdbc:mysql://localhost:3306/sys";
-        this.username = "root";
-        this.password = "YOUR_PASSWORD";
+//        this.url = "jdbc:mysql://localhost:3306/sys";
+//        this.username = "root";
+//        this.password = "YOUR_PASSWORD";
         try {
             DatabaseName = "";
             assert url != null;
@@ -324,68 +324,135 @@ public class Server {
 
     }
 
-    public boolean updateEntry(int MemberID, String column, String value, PrintWriter clientOut) {
-        PreparedStatement stmt;
-        boolean columnFound = false;
-        String oldValue = "";
-        try {
-            while (columns.next()) {
-                String columnName = columns.getString("COLUMN_NAME");
-                if (columnName.equals(column)) {
-                    System.out.println("Column found: " + columnName);
-                    clientOut.println("Column found: " + columnName);
-                    columnFound = true;
-                    break;
-                }
-            }
-            if (!columnFound) {
-                System.out.println("Column not found in the database.");
-                clientOut.println("Column not found in the database.");
-                clientOut.println("END");
-                return false;
-            }
-            stmt = DatabaseConnect.prepareStatement("SELECT * FROM members WHERE MemberID = " + MemberID);
-            ResultSet result = stmt.executeQuery();
-            if (result.next()) {
-                System.out.println("Member found!");
-                String columnName = columns.getString("COLUMN_NAME");
-                PreparedStatement oldValueStmt = DatabaseConnect.prepareStatement("SELECT ? FROM members WHERE MemberID = ?");
-                oldValueStmt.setString(1, columnName);
-                oldValueStmt.setInt(2, MemberID);
-                ResultSet oldValueRS = oldValueStmt.executeQuery();
-                if (oldValueRS.next()) oldValue = oldValueRS.getString(columnName);
-                if (column.equals("MemberId")) {
-                    if (isMemberIDUsed(Integer.parseInt(value))) {
-                        System.out.println("member id is already used.");
-                        clientOut.println("member id is already used.");
-                        clientOut.println("END");
-                        return false;
-                    }
-                }
-                PreparedStatement stmt2 = DatabaseConnect.prepareStatement("UPDATE members SET " + columnName + " = ? WHERE MemberID = ?");
-                stmt2.setString(1, value);
-                stmt2.setInt(2, MemberID);
-                stmt2.executeUpdate();
-                System.out.println("Updated " + columnName + " from " + oldValue + " to " + value);
-                clientOut.println("Updated" + columnName + " from " + oldValue + " to " + value);
-                clientOut.println("END");
-                return true;
-            }
-            else {
-                System.out.println("Member not found in the database.");
-                clientOut.println("Member not found in the database.");
-                clientOut.println("END");
-                return false;
-            }
-        } catch (SQLException e) {
-            System.out.println("Error updating entry: " + e.getMessage());
-            clientOut.println("Error updating entry: " + e.getMessage());
-            clientOut.println("END");
+//    public boolean updateEntry(int MemberID, String column, String value, PrintWriter clientOut) {
+//        PreparedStatement stmt;
+//        boolean columnFound = false;
+//        String oldValue = "";
+//        String columnName = column;
+//
+//        if (!columnName.equals("First_Name")
+//                && !columnName.equals("Last_Name")
+//                && !columnName.equals("Date_of_Birth")
+//                && !columnName.equals("Email")
+//                && !columnName.equals("Phone_Number")
+//                && !columnName.equals("Gender")
+//                && !columnName.equals("City_of_Residence")) {
+//
+//            clientOut.println("Column not found in the database.");
+//            clientOut.println("END");
+//            return false;
+//        }
+//        try {
+////            while (columns.next()) {
+////                String columnName = columns.getString("COLUMN_NAME");
+////                if (columnName.equals(column)) {
+////                    System.out.println("Column found: " + columnName);
+////                    clientOut.println("Column found: " + columnName);
+////                    columnFound = true;
+////                    break;
+////                }
+////            }
+////            if (!columnFound) {
+////                System.out.println("Column not found in the database.");
+////                clientOut.println("Column not found in the database.");
+////                clientOut.println("END");
+////                return false;
+////            }
+//            stmt = DatabaseConnect.prepareStatement("SELECT * FROM members WHERE MemberID = " + MemberID);
+//            ResultSet result = stmt.executeQuery();
+//            if (result.next()) {
+//                System.out.println("Member found!");
+//                PreparedStatement oldValueStmt = DatabaseConnect.prepareStatement("SELECT ? FROM members WHERE MemberID = ?");
+//                oldValueStmt.setString(1, columnName);
+//                oldValueStmt.setInt(2, MemberID);
+//                ResultSet oldValueRS = oldValueStmt.executeQuery();
+//                if (oldValueRS.next()) oldValue = oldValueRS.getString(columnName);
+//                if (column.equals("MemberId")) {
+//                    if (isMemberIDUsed(Integer.parseInt(value))) {
+//                        System.out.println("member id is already used.");
+//                        clientOut.println("member id is already used.");
+//                        clientOut.println("END");
+//                        return false;
+//                    }
+//                }
+//                PreparedStatement stmt2 = DatabaseConnect.prepareStatement("UPDATE members SET " + columnName + " = ? WHERE MemberID = ?");
+//                stmt2.setString(1, value);
+//                stmt2.setInt(2, MemberID);
+//                stmt2.executeUpdate();
+//                System.out.println("Updated " + columnName + " from " + oldValue + " to " + value);
+//                clientOut.println("Updated" + columnName + " from " + oldValue + " to " + value);
+//                clientOut.println("END");
+//                return true;
+//            }
+//            else {
+//                System.out.println("Member not found in the database.");
+//                clientOut.println("Member not found in the database.");
+//                clientOut.println("END");
+//                return false;
+//            }
+//        } catch (SQLException e) {
+//            System.out.println("Error updating entry: " + e.getMessage());
+//            clientOut.println("Error updating entry: " + e.getMessage());
+//            clientOut.println("END");
+//
+//        }
+//        return false;
+//
+//    }
 
-        }
+public boolean updateEntry(int MemberID, String column, String value, PrintWriter clientOut) {
+    String columnName = column;
+
+    if (!columnName.equals("First_Name")
+            && !columnName.equals("Last_Name")
+            && !columnName.equals("Date_of_Birth")
+            && !columnName.equals("Email")
+            && !columnName.equals("Phone_Number")
+            && !columnName.equals("Gender")
+            && !columnName.equals("City_of_Residence")) {
+
+        System.out.println("Column not found in the database: " + columnName);
+        clientOut.println("Column not found in the database.");
+        clientOut.println("END");
         return false;
-
     }
+
+    try {
+        PreparedStatement checkStmt = DatabaseConnect.prepareStatement(
+                "SELECT * FROM members WHERE MemberID = ?"
+        );
+        checkStmt.setInt(1, MemberID);
+
+        ResultSet result = checkStmt.executeQuery();
+
+        if (!result.next()) {
+            System.out.println("Member not found in the database.");
+            clientOut.println("Member not found in the database.");
+            clientOut.println("END");
+            return false;
+        }
+
+        String oldValue = result.getString(columnName);
+
+        PreparedStatement updateStmt = DatabaseConnect.prepareStatement(
+                "UPDATE members SET " + columnName + " = ? WHERE MemberID = ?"
+        );
+        updateStmt.setString(1, value);
+        updateStmt.setInt(2, MemberID);
+        updateStmt.executeUpdate();
+
+        System.out.println("Updated " + columnName + " from " + oldValue + " to " + value);
+        clientOut.println("Updated " + columnName + " from " + oldValue + " to " + value);
+        clientOut.println("END");
+        return true;
+
+    } catch (SQLException e) {
+        System.out.println("Error updating entry: " + e.getMessage());
+        clientOut.println("Error updating entry: " + e.getMessage());
+        clientOut.println("END");
+        return false;
+    }
+}
 
 
     public void deleteEntry(int MemberID) {

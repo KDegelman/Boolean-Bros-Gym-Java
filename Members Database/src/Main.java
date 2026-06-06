@@ -6,6 +6,7 @@ public class Main {
         System.out.println("Server or client (S, C)");
         Scanner scanner = new Scanner(System.in);
         char input = scanner.nextLine().charAt(0);
+
         if (input == 'C') {
             Client client = new Client();
             client.run();
